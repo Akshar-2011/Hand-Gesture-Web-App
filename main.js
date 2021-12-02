@@ -18,8 +18,36 @@ function modelLoaded(){
 }
 function speak(){
     var synth = Window.speechSynthesis;
-    var speak_1 = "The first prediction is "+prediction_1;
-    var speak_2 = "And the second prediction is "+prediction_2;
-    var utterThis = new SpeechSynthesisUtterance(speak_1  + speak_2);
+    speak_data = speak_1;
+    var utterThis = new SpeechSynthesisUtterance(speak_data);
     synth.speak(utterThis);
+}
+function check(){
+    image = document.getElementById('captured_image');
+    classifier.classify(image, gotResult);
+}
+function gotResult(error, results){
+    if(error){
+        console.error(error);
+    }
+    else{
+        console.log(results);
+        document.getElementById("result_emotion_name").innerHTML = results[0].label;
+        prediction = results[0].label;
+        console.log("Working")
+        speak_1 = "";
+        if(results[0].label == "Amazing"){
+            speak_1 = "Amazing";
+            document.getElementById("update_emoji").innerHTML = "&#128076;";
+        }
+        if(results[0].label == "Best"){
+            speak_1 = "Best";
+            document.getElementById("update_emoji").innerHTML = "&#128077;";
+        }
+        if(results[0].label == "Victory"){
+            speak_1 = "Victory";
+            document.getElementById("update_emoji").innerHTML = "&#9996;";
+        }
+        speak();
+    }
 }
